@@ -8,10 +8,10 @@
   },
   "keywords": [],
   "author": "",
+  "type": "module",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   }
 }
