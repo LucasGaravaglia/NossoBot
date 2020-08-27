@@ -1,1 +1,1 @@
-[![Run on Repl.it](https://repl.it/badge/github/Lucas-Garavaglia/NossoBot)](https://repl.it/github/Lucas-Garavaglia/NossoBot)# NossoBot
+# NossoBot
