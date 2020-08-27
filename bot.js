@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
+require("dotenv").config();
 
 client.on("ready", () => {
   console.log(`Bot foi iniciado no servidor.`);
@@ -9,7 +10,7 @@ client.on("ready", () => {
 client.on("message", (message) => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
-  if (message.content("!kick")) {
+  if (message.content.startsWith("!kick")) {
     const user = message.mentions.users.first();
     if (user) {
       const member = message.guild.member(user);
