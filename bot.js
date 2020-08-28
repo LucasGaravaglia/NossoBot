@@ -1,6 +1,5 @@
 import com from "./command.js";
 import Discord from "discord.js";
-// const Discord = require("discord.js");
 const client = new Discord.Client();
 // import config from "./config.json";
 
@@ -15,10 +14,18 @@ client.on("message", (message) => {
   if (message.channel.type === "dm") return;
   const prefix = "!"; //config.prefix;
   const command = message.content.split(" ")[0];
-  //   const args = message.content.split(" ")[1];
   if (command === `${prefix}kick`) {
     Command.kick(message);
   }
+  if (command === `${prefix}mute`) {
+    Command.muteChat(message);
+  }
+  if (command === `${prefix}unmute`) {
+    Command.unmuteChat(message);
+  }
+  if (command === `${prefix}clear`) {
+    Command.clear(message);
+  }
 });
 
-client.login("NzQ4NjUxNDc0MjE2NTUwNDgz.X0giBA.oze2b778CTwJ-gJt8sElS4ENMPA");
+client.login("");
