@@ -2,9 +2,13 @@ import Command from "./command.js";
 import Discord from "discord.js";
 
 import adm from "./administration.js";
+import Manage from "./manageFile.js";
+
+const config = Manage.load("./config.json");
 
 const client = new Discord.Client();
-const prefix = "!"; //config.prefix;
+const prefix = config.prefix;
+const prefixMaster = config.prefixMaster;
 
 client.on("ready", () => {
   console.log(`Bot foi iniciado no servidor.`);
@@ -16,16 +20,16 @@ client.on("message", (message) => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   const command = message.content.split(" ")[0];
-  if (command == "s!help") {
+  if (command == `${prefixMaster}help`) {
     adm.help(message);
   }
-  if (command == "s!add") {
+  if (command == `${prefixMaster}add`) {
     adm.linkJobWithReaction(message);
   }
-  if (command == "s!remove") {
+  if (command == `${prefixMaster}remove`) {
     adm.unlinkJob(message);
   }
-  if (command == "s!set") {
+  if (command == `${prefixMaster}set`) {
     adm.setConfig(message);
   }
   if (command === `${prefix}kick`) {
@@ -48,4 +52,4 @@ client.on("message", (message) => {
   }
 });
 
-client.login("NzQ4NjUxNDc0MjE2NTUwNDgz.X0giBA.k4lEyaSwxnybc2xmpUT0FeuJhJw");
+client.login(config.token);
