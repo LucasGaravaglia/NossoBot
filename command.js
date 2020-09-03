@@ -1,4 +1,4 @@
-// export default class command {
+import { MessageEmbed } from "discord.js";
 function kick(message) {
   if (!message.member.hasPermission("KICK_MEMBERS")) {
     return message.reply("Você não tem permissão para usar este comando.");
@@ -53,6 +53,7 @@ function muteChat(message) {
   } else {
     message.author.send("Você não mencionou o usuário.");
   }
+  message.channel.bulkDelete(1);
 }
 
 function unmuteChat(message) {
@@ -76,6 +77,7 @@ function unmuteChat(message) {
   } else {
     message.author.send("Você não mencionou o usuário.");
   }
+  message.channel.bulkDelete(1);
 }
 
 function clear(message) {
@@ -91,7 +93,7 @@ function ban(message) {
     return message.reply("Você não tem permissão para usar este comando.");
   }
   var tempoBanido = 0;
-  tempoBanido = parseInt(message.content.split(" ")[3], 10);
+  tempoBanido = parseInt(message.content.split(" ")[2], 10);
   const motivo = message.content.split(" ")[3];
   const user = message.mentions.users.first();
   var response = "";
@@ -123,6 +125,27 @@ function ban(message) {
       message.reply("Você não mencionou o usuário para ser banido");
     }
   }
+  message.channel.bulkDelete(1);
+}
+
+function help(message) {
+  const embed = new MessageEmbed()
+    .setColor("0x0000ff")
+    .setDescription(
+      "[] = obrigatório\n" +
+        "()=opcional\n" +
+        "**==================================**\n" +
+        "**Comandos de Administrador**\n" +
+        "**==================================**\n\n" +
+        "`!kick [@user] (motivo)`\n\n" +
+        "`!mute [@user]`\n\n" +
+        "`!unmute [@user]`\n\n" +
+        "`!ban [@user] (tempo do ban) (motivo do ban)`\n\n" +
+        "`!clear`\n" +
+        "**---------------------------------------------**"
+    );
+  message.channel.bulkDelete(1);
+  message.channel.send(embed);
 }
 
 export default {
@@ -131,6 +154,7 @@ export default {
   unmuteChat,
   clear,
   ban,
+  help,
 };
 
 // const user = message.mentions.users.first();

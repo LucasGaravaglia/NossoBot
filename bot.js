@@ -16,14 +16,23 @@ client.on("message", (message) => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   const command = message.content.split(" ")[0];
-  if (command == "adm!linkJobWithReaction") {
+  if (command == "s!help") {
+    adm.help(message);
+  }
+  if (command == "s!add") {
     adm.linkJobWithReaction(message);
   }
-  if (command == "adm!setConfig") {
+  if (command == "s!remove") {
+    adm.unlinkJob(message);
+  }
+  if (command == "s!set") {
     adm.setConfig(message);
   }
   if (command === `${prefix}kick`) {
     Command.kick(message);
+  }
+  if (command == "!help") {
+    Command.help(message);
   }
   if (command === `${prefix}mute`) {
     Command.muteChat(message);
@@ -39,4 +48,4 @@ client.on("message", (message) => {
   }
 });
 
-client.login("NzQ4NjUxNDc0MjE2NTUwNDgz.X0giBA.FGDmQ1VZHrn9aq5A2TiGrpE80Hg");
+client.login("NzQ4NjUxNDc0MjE2NTUwNDgz.X0giBA.k4lEyaSwxnybc2xmpUT0FeuJhJw");
