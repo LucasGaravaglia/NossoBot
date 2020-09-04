@@ -29,8 +29,11 @@ client.on("message", (message) => {
   if (command == `${prefixMaster}remove`) {
     adm.unlinkJob(message);
   }
-  if (command == `${prefixMaster}set`) {
-    adm.setConfig(message);
+  if (command == `${prefixMaster}setServer`) {
+    adm.setServer(message);
+  }
+  if (command == `${prefixMaster}setMessage`) {
+    adm.setMessage(message);
   }
   if (command === `${prefix}kick`) {
     Command.kick(message);

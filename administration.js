@@ -1,142 +1,213 @@
 import Manage from "./manageFile.js";
 import { MessageEmbed } from "discord.js";
+import Embed from "./embed.js";
 
 function linkJobWithReaction(message) {
   if (!message.member.hasPermission("ADMINISTRATOR")) {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription(
-        `${message.author} Você não tem permissão para usar este comando.`
-      );
-    return message.channel.send(embed);
+    return Embed.error(
+      message,
+      `${message.author} Você não tem permissão para usar este comando.`
+    );
   }
   try {
-    var ListOfOffice = Manage.load();
+    var dataFile = Manage.load();
+    if (!dataFile.serverID) {
+      return Embed.error(
+        message,
+        `${message.author} Atenção! Adicionar uma mensagem para receber reações primeiro.`
+      );
+    } else if (!dataFile.messages.length) {
+      return Embed.error(
+        message,
+        `${message.author} Atenção! Adicionar um servidor primeiro.`
+      );
+    }
     var reactionTempId = message.content.split(":");
-    var newList = {
+    var content = {
       cargoID: message.content.split(" ")[1].toString(),
       reactionID: reactionTempId[Object.keys(reactionTempId).length - 1]
         .toString()
         .slice(0, -1),
     };
-    ListOfOffice.push(newList);
-    Manage.save(ListOfOffice);
-    const embed = new MessageEmbed()
-      .setTitle("Completo ✅")
-      .setColor("0x00ff00")
-      .setDescription(
-        `${message.content.split(" ")[1]} vinculado ao emoji :${
-          reactionTempId[Object.keys(reactionTempId).length - 2]
-        }:`
-      );
-    message.channel.send(embed);
-  } catch {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription("Algo deu errado.\nConsulte o s!help");
-    message.channel.send(embed);
+    dataFile.messages[0].content.push(content);
+    Manage.save(dataFile);
+    Embed.complete(
+      message,
+      `${message.content.split(" ")[1]} vinculado ao emoji :${
+        reactionTempId[Object.keys(reactionTempId).length - 2]
+      }:`
+    );
+  } catch (e) {
+    console.log(e);
+    Embed.error(message, "Algo deu errado.\nConsulte o s!help");
   }
 }
 
 function unlinkJob(message) {
   if (!message.member.hasPermission("ADMINISTRATOR")) {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription(
-        `${message.author} Você não tem permissão para usar este comando.`
-      );
-    return message.channel.send(embed);
+    return Embed.error(
+      message,
+      `${message.author} Você não tem permissão para usar este comando.`
+    );
   }
   try {
     var ListOfOffice = Manage.load();
     var reactionTempId = message.content.split(":");
-    var newList = {
+    var ListRemove = {
       cargoID: message.content.split(" ")[1].toString(),
       reactionID: reactionTempId[Object.keys(reactionTempId).length - 1]
         .toString()
         .slice(0, -1),
     };
-    ListOfOffice.pop(newList);
-    Manage.save(ListOfOffice);
-    const embed = new MessageEmbed()
-      .setTitle("Completo ✅")
-      .setColor("0x00ff00")
-      .setDescription(
-        `${message.content.split(" ")[1]} desvinculado ao emoji :${
-          reactionTempId[Object.keys(reactionTempId).length - 2]
-        }:`
+    var contentJson = ListOfOffice.messages[0].content.find(
+      (content) => content.cargoID == ListRemove.cargoID
+    );
+    if (typeof contentJson !== "undefined") {
+      var indexArray = ListOfOffice.messages[0].content.findIndex(
+        (content) => content.cargoID == ListRemove.cargoID
       );
-    message.channel.send(embed);
-  } catch {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription("Algo deu errado.\nConsulte o s!help");
-    message.channel.send(embed);
+
+      if (indexArray == 0) {
+        ListOfOffice.messages[0].content = ListOfOffice.messages[0].content.slice(
+          1
+        );
+      } else {
+        var arr1 = ListOfOffice.messages[0].content.slice(0, indexArray);
+        if (indexArray == ListOfOffice.messages[0].content.length - 1) {
+          ListOfOffice.messages[0].content = arr1;
+        } else {
+          var arr2 = ListOfOffice.messages[0].content.slice(
+            indexArray + 1,
+            ListOfOffice.messages.length
+          );
+
+          ListOfOffice.messages[0].content = arr1.concat(arr2);
+        }
+      }
+    } else {
+      Embed.error(
+        "emoji não consta na lista.\nConsultar o s!help ou o programador."
+      );
+      return;
+    }
+    Manage.save(ListOfOffice);
+    Embed.complete(
+      message,
+      `${message.content.split(" ")[1]} desvinculado ao emoji :${
+        reactionTempId[Object.keys(reactionTempId).length - 2]
+      }:`
+    );
+  } catch (e) {
+    console.log(e);
+    Embed.error(message, "Algo deu errado.\nConsulte o s!help");
   }
 }
 
-function setConfig(message) {
+function setServer(message) {
   if (!message.member.hasPermission("ADMINISTRATOR")) {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription(
-        `${message.author} Você não tem permissão para usar este comando.`
-      );
-    return message.channel.send(embed);
+    return Embed.error(
+      message,
+      `${message.author} Você não tem permissão para usar este comando.`
+    );
   }
   try {
     const obj = {
-      chatID: message.content.split(" ")[1].toString(),
-      serverID: message.content.split(" ")[2].toString(),
+      serverID: message.content.split(" ")[1].toString(),
+      messages: [],
     };
-    Manage.save(obj, "./configServer.json");
-    const embed = new MessageEmbed()
-      .setTitle("Completo ✅")
-      .setColor("0x00ff00")
-      .setDescription("Mensagem e canal registrados.");
-    message.channel.send(embed);
-  } catch {
-    const embed = new MessageEmbed()
-      .setTitle("ERRO ❌	")
-      .setColor("0xff0000")
-      .setDescription("Algo deu errado.\nConsulte o s!help");
-    message.channel.send(embed);
+    Manage.save(obj);
+    Embed.complete(message, "Server registrado.");
+  } catch (e) {
+    console.log(e);
+    Embed.error(message, "Algo deu errado.\nConsulte o s!help");
+  }
+}
+
+function setMessage(message) {
+  if (!message.member.hasPermission("ADMINISTRATOR")) {
+    return Embed.error(
+      message,
+      `${message.author} Você não tem permissão para usar este comando.`
+    );
+  }
+  try {
+    var dataFile = Manage.load();
+    if (!dataFile.serverID) {
+      return Embed.error(
+        message,
+        `${message.author} Atenção! Adicionar um servidor primeiro.`
+      );
+    }
+    var obj = {
+      id: message.content.split(" ")[1].toString(),
+      content: [],
+    };
+    var contentJson = dataFile.messages.find((message) => message.id == obj.id);
+    if (typeof contentJson !== "undefined") {
+      obj = contentJson;
+      var indexArray = dataFile.messages.findIndex(
+        (message) => message.id == obj.id
+      );
+      var arr1 = dataFile.messages.slice(0, indexArray);
+      if (indexArray == dataFile.messages.length - 1) {
+        arr1.unshift(obj);
+        dataFile.messages = arr1;
+      } else {
+        var arr2 = dataFile.messages.slice(
+          indexArray + 1,
+          dataFile.messages.length
+        );
+        var newObj = arr1.concat(arr2);
+        newObj.unshift(obj);
+        dataFile.messages = newObj;
+      }
+    } else {
+      dataFile.messages.unshift(obj);
+    }
+    Manage.save(dataFile);
+    Embed.complete(message, "Mensagem registrada.");
+  } catch (e) {
+    console.log(e);
+    Embed.error(message, "Algo deu errado.\nConsulte o s!help");
   }
 }
 
 function help(message) {
+  message.channel.bulkDelete(1);
   const embed = new MessageEmbed()
     .setColor("0x0000ff")
     .setDescription(
       "[] = obrigatório\n" +
-        "**==================================**\n" +
-        "**Comandos de Administrador**\n" +
-        "**==================================**\n\n" +
-        "`s!set [MensagemId] [ServerId]`\n" +
-        "_Observação: O bot so suporta uma mensagem para receber reações._ \n\n" +
+        "**==============================================**\n" +
+        "**           Comandos de Administrador**\n" +
+        "**==============================================**\n\n" +
+        "`s!setServer [ServerId]`\n" +
+        "`s!setMessage [MensagemId] `\n" +
+        "_Observação: Id do server precisa estar previamente configurado_\n" +
         "`s!add [@cargo] [:emoji:]`\n" +
-        "_Observação: Cargos precisam estar previamente criados\n" +
+        "_Observação: Cargos precisam estar previamente criados_\n" +
         "`s!remove [@cargo] [:emoji:]`\n\n" +
-        "**----------------------------------------**"
+        "**--------------------------------------------------------------------------------**"
     )
     .setFooter("'Com grandes poderes vem grandes responsabilidades'");
-  message.channel.bulkDelete(1);
   message.channel.send(embed);
 }
 
 async function assignReactions(data, client) {
   if (data.t !== "MESSAGE_REACTION_ADD" && data.t !== "MESSAGE_REACTION_REMOVE")
     return;
-  const config = Manage.load("./configServer.json");
-  if (data.d.message_id != config.chatID) return;
+  const configJson = Manage.load();
+  let flag = true;
+  var param;
+  configJson.messages.forEach((element) => {
+    if (element.id == data.d.message_id) {
+      flag = false;
+      param = element.content;
+    }
+  });
+  if (flag) return;
 
-  const param = Manage.load();
-  const Guild = client.guilds.fetch(config.serverID);
+  const Guild = client.guilds.fetch(configJson.serverID);
   const member = (await Guild).member(data.d.user_id);
 
   let cargo;
@@ -166,8 +237,9 @@ async function assignReactions(data, client) {
 
 export default {
   linkJobWithReaction,
-  assignReactions,
-  setConfig,
   unlinkJob,
+  setServer,
+  setMessage,
   help,
+  assignReactions,
 };

@@ -134,15 +134,15 @@ function help(message) {
     .setDescription(
       "[] = obrigatório\n" +
         "()=opcional\n" +
-        "**==================================**\n" +
-        "**Comandos de Administrador**\n" +
-        "**==================================**\n\n" +
+        "**==============================================**\n" +
+        "**           Comandos de Administrador**\n" +
+        "**==============================================**\n\n" +
         "`!kick [@user] (motivo)`\n\n" +
         "`!mute [@user]`\n\n" +
         "`!unmute [@user]`\n\n" +
         "`!ban [@user] (tempo do ban) (motivo do ban)`\n\n" +
         "`!clear`\n" +
-        "**---------------------------------------------**"
+        "**--------------------------------------------------------------------------------**"
     );
   message.channel.bulkDelete(1);
   message.channel.send(embed);
@@ -156,8 +156,3 @@ export default {
   ban,
   help,
 };
-
-// const user = message.mentions.users.first();
-// const member = message.guild.member(user);
-// member.voice.mute.valueOf(false);
-// }

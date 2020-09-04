@@ -2,7 +2,7 @@ import fs from "fs";
 const FilePath = "./data.json";
 
 function save(content, path = FilePath) {
-  const contentString = JSON.stringify(content);
+  const contentString = JSON.stringify(content, null, 2);
   return fs.writeFileSync(path, contentString);
 }
 function load(path = FilePath) {
