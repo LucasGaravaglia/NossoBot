@@ -1,12 +1,13 @@
-import Command from "./command.js";
 import Discord from "discord.js";
 
-import adm from "./administration.js";
+import Command from "./command/index.js";
+import event from "./events/assingReactions.js";
+
 import Manage from "./manageFile.js";
 
-const config = Manage.load("./config.json");
-
 const client = new Discord.Client();
+
+const config = Manage.load("./config.json");
 const prefix = config.prefix;
 const prefixMaster = config.prefixMaster;
 
@@ -14,26 +15,26 @@ client.on("ready", () => {
   console.log(`Bot foi iniciado no servidor.`);
 });
 
-client.on("raw", async (data) => adm.assignReactions(data, client));
+client.on("raw", async (data) => event(data, client));
 
 client.on("message", (message) => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   const command = message.content.split(" ")[0];
   if (command == `${prefixMaster}help`) {
-    adm.help(message);
+    Command.helpRoleReaction(message);
   }
   if (command == `${prefixMaster}add`) {
-    adm.linkJobWithReaction(message);
+    Command.linkJobWithReaction(message);
   }
   if (command == `${prefixMaster}remove`) {
-    adm.unlinkJob(message);
+    Command.unlinkJob(message);
   }
   if (command == `${prefixMaster}setServer`) {
-    adm.setServer(message);
+    Command.setServer(message);
   }
   if (command == `${prefixMaster}setMessage`) {
-    adm.setMessage(message);
+    Command.setMessage(message);
   }
   if (command === `${prefix}kick`) {
     Command.kick(message);
