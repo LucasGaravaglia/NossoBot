@@ -12,6 +12,8 @@ export default function help(message) {
         "_Observação: OBRIGATÓRIO_\n" +
         "`s!setMessage [MensagemId] `\n" +
         "_Observação: Id do server precisa estar previamente configurado_\n" +
+        "`s!setChat [MensagemId] `\n" +
+        "_Observação: Id do chat que tem a mensagem a ser reagida, não obrigatório_\n" +
         "`s!add [@cargo] [:emoji:]`\n" +
         "_Observação: Cargos precisam estar previamente criados_\n" +
         "`s!remove [@cargo] [:emoji:]`\n\n" +

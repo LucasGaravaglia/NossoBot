@@ -21,6 +21,9 @@ client.on("message", (message) => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   const command = message.content.split(" ")[0];
+  if (command == `${prefixMaster}setChat`) {
+    Command.setChat(message);
+  }
   if (command == `${prefixMaster}help`) {
     Command.helpRoleReaction(message);
   }

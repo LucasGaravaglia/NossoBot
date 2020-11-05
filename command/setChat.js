@@ -1,6 +1,6 @@
 import Manage from "../manageFile.js";
 import Embed from "./embed.js";
-export default function setServer(message) {
+export default function setChat(message) {
   if (!message.member.hasPermission("ADMINISTRATOR")) {
     return Embed.error(
       message,
@@ -8,13 +8,10 @@ export default function setServer(message) {
     );
   }
   try {
-    const obj = {
-      serverID: message.content.split(" ")[1].toString(),
-      chatID: "",
-      messages: [],
-    };
+    const obj = Manage.load();
+    obj.chatID = message.content.split(" ")[1].toString();
     Manage.save(obj);
-    Embed.complete(message, "Server registrado.");
+    Embed.complete(message, "Chat registrado.");
   } catch (e) {
     console.log(e);
     Embed.error(message, "Algo deu errado.\nConsulte o s!help");

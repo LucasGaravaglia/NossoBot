@@ -9,6 +9,7 @@ import setMessage from "./setMessage.js";
 import setServer from "./setServer.js";
 import unlinkJob from "./unlinkJob.js";
 import unmuteChat from "./unmuteChat.js";
+import setChat from "./setChat.js";
 
 export default {
   ban,
@@ -22,4 +23,5 @@ export default {
   setServer,
   unlinkJob,
   unmuteChat,
+  setChat,
 };

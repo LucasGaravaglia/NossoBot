@@ -2,7 +2,6 @@ import Manage from "../manageFile.js";
 export default async function assignReactions(data, client) {
   if (data.t !== "MESSAGE_REACTION_ADD" && data.t !== "MESSAGE_REACTION_REMOVE")
     return;
-  console.log(data);
   const configJson = Manage.load();
   let flag = true;
   var param;
