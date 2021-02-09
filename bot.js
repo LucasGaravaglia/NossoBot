@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 
 import Command from "./command/index.js";
-import event from "./events/assingReactions.js";
+import event from "./events/assignReactions.js";
 
 import Manage from "./manageFile.js";
 
@@ -13,6 +13,7 @@ const prefixMaster = config.prefixMaster;
 
 client.on("ready", () => {
   console.log(`Bot foi iniciado no servidor.`);
+  client.user.setActivity("!help s!help");
 });
 
 client.on("raw", async (data) => event(data, client));
