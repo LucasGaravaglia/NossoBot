@@ -1,23 +1,25 @@
 {
-  "name": "MonkeyProject",
+  "name": "music-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "bot.js",
+  "repository": "https://github.com/TannerGabriel/discord-music-bot.git",
+  "description": "A simple discord music bot",
+  "main": "index.js",
   "scripts": {
-    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "type": "module",
-  "license": "ISC",
+  "keywords": [
+    "discord",
+    "music",
+    "bot"
+  ],
+  "author": "Gabriel Tanner",
+  "license": "MIT",
   "dependencies": {
-    "@discordjs/opus": "^0.4.0",
-    "discord.js": "^12.3.1",
-    "ffmpeg": "^0.0.4",
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.5.1",
+    "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.2",
-    "mongoose": "^5.10.3",
-    "yt-search": "^2.7.3",
-    "ytdl-core-discord": "^1.2.5"
+    "ytdl-core": "^4.4.5",
+    "ytsr": "^3.2.4"
   }
 }
